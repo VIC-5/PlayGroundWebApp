@@ -1,0 +1,60 @@
+﻿@page
+@model PlayGroundWebApp.Pages.IndexModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <title>PlayGround</title>
+</head>
+<body>
+    <div id="form1">
+        <h1>PlayGround</h1>
+        <button class="button_test">submit</button>
+        <button class="button_user_info">get user info</button>
+    </div>
+    <div id="result"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(".button_test").on("click", function (event) {
+        event.preventDefault();
+        console.log("dispatch!");
+
+        $.ajax({
+            type: "POST",
+            url: "/api/GetText",
+            data: '{"test1": "abcdef" , "test2": "123456"}',
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json"
+        }).done(function (response) {
+            console.log("success");
+            console.log(response);
+            $("#result").append(response);
+        }).fail(function (response) {
+            console.log("fail");
+            console.log(response);
+        });
+    });
+
+    $(".button_user_info").on("click", function (event) {
+        event.preventDefault();
+        console.log("user info event");
+
+        $.ajax({
+            type: "POST",
+            url: "/api/GetUserInfo",
+            data: '{"id": 1 , "enable": true}',
+            contentType: "application/json; charset=utf-8",
+        }).done(function (response) {
+            console.log("got user info");
+            $('#result').append(response);
+        }).fail(function (response) {
+            console.log("fail to get user info");
+            console.log(response);
+        });
+    });
+</script>
